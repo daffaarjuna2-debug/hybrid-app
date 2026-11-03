@@ -31,12 +31,12 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
     icon: '🍗',
     date: '02 Nov 2026',
     paymentMethod: 'QRIS',
-    notes: 'Makan malam bersama teman kampus selesai kelas sore.',
+    notes: 'Makan malam bersama teman kampus.',
   },
   {
     id: 'TRX-003',
     title: 'Isi Bensin Pertamax',
-    amount: 45000,
+    amount: 200000,
     type: 'expense',
     category: 'Transportasi',
     icon: '⛽',
@@ -58,13 +58,13 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: 'TRX-005',
     title: 'Print & Jilid Laporan',
-    amount: 18000,
+    amount: 50000,
     type: 'expense',
     category: 'Keperluan Kuliah',
     icon: '📚',
     date: '03 Nov 2026',
     paymentMethod: 'Tunai',
-    notes: 'Cetak dokumen laporan praktikum dan materi ujian tengah semester.',
+    notes: 'isi flazz untuk parkir di kampus.',
   },
 ];
 
