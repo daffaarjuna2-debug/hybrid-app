@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Platform,
+  StatusBar as RNStatusBar,
+  View,
+} from 'react-native';
 
 import { Transaction, INITIAL_TRANSACTIONS } from './src/data/transactions';
 import AuthScreen from './src/screens/AuthScreen';
@@ -16,30 +22,25 @@ export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
-  // Alur Login
   const handleLoginSuccess = (username: string) => {
     setCurrentUser(username);
     setCurrentScreen('home');
   };
 
-  // Alur Logout
   const handleLogout = () => {
     setCurrentUser(null);
     setCurrentScreen('auth');
   };
 
-  // Buka Halaman Detail
   const handleSelectTransaction = (tx: Transaction) => {
     setSelectedTransaction(tx);
     setCurrentScreen('detail');
   };
 
-  // Tambah Transaksi ke State Statis
   const handleAddTransaction = (newTx: Transaction) => {
     setTransactions([newTx, ...transactions]);
   };
 
-  // Hapus Transaksi dari State Statis
   const handleDeleteTransaction = (id: string) => {
     setTransactions(transactions.filter((item) => item.id !== id));
     setCurrentScreen('home');
@@ -50,45 +51,58 @@ export default function App() {
     .reduce((sum, item) => sum + item.amount, 0);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        {
+          paddingTop:
+            Platform.OS === 'android' ? (RNStatusBar.currentHeight || 0) : 0,
+        },
+      ]}
+    >
+      <StatusBar style="dark" backgroundColor="#ffffff" />
+      <View style={styles.container}>
+        {currentScreen === 'auth' && (
+          <AuthScreen onLoginSuccess={handleLoginSuccess} />
+        )}
 
-      {currentScreen === 'auth' && (
-        <AuthScreen onLoginSuccess={handleLoginSuccess} />
-      )}
+        {currentScreen === 'home' && currentUser && (
+          <HomeScreen
+            username={currentUser}
+            transactions={transactions}
+            onSelectTransaction={handleSelectTransaction}
+            onNavigateToAdd={() => setCurrentScreen('add')}
+            onLogout={handleLogout}
+          />
+        )}
 
-      {currentScreen === 'home' && currentUser && (
-        <HomeScreen
-          username={currentUser}
-          transactions={transactions}
-          onSelectTransaction={handleSelectTransaction}
-          onNavigateToAdd={() => setCurrentScreen('add')}
-          onLogout={handleLogout}
-        />
-      )}
+        {currentScreen === 'detail' && selectedTransaction && (
+          <DetailScreen
+            transaction={selectedTransaction}
+            onBack={() => setCurrentScreen('home')}
+            onDelete={handleDeleteTransaction}
+          />
+        )}
 
-      {currentScreen === 'detail' && selectedTransaction && (
-        <DetailScreen
-          transaction={selectedTransaction}
-          onBack={() => setCurrentScreen('home')}
-          onDelete={handleDeleteTransaction}
-        />
-      )}
-
-      {currentScreen === 'add' && (
-        <AddTransactionScreen
-          onBack={() => setCurrentScreen('home')}
-          onAddTransaction={handleAddTransaction}
-          currentExpenseTotal={totalExpense}
-        />
-      )}
+        {currentScreen === 'add' && (
+          <AddTransactionScreen
+            onBack={() => setCurrentScreen('home')}
+            onAddTransaction={handleAddTransaction}
+            currentExpenseTotal={totalExpense}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: '#ffffff',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
   },
 });

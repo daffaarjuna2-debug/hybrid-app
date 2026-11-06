@@ -24,27 +24,27 @@ export default function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
 
   const handleSubmit = () => {
     if (!username.trim() || !password.trim()) {
-      Alert.alert('Validasi Gagal', 'Username dan password wajib diisi!');
+      Alert.alert('Peringatan', 'Username dan password wajib diisi!');
       return;
     }
 
     if (!isLoginMode) {
       if (!fullName.trim()) {
-        Alert.alert('Validasi Gagal', 'Nama lengkap wajib diisi saat mendaftar!');
+        Alert.alert('Peringatan', 'Nama lengkap wajib diisi!');
         return;
       }
       if (password.length < 4) {
-        Alert.alert('Validasi Gagal', 'Password minimal harus 4 karakter!');
+        Alert.alert('Peringatan', 'Password minimal 4 karakter!');
         return;
       }
       if (password !== confirmPassword) {
-        Alert.alert('Validasi Gagal', 'Konfirmasi password tidak cocok!');
+        Alert.alert('Peringatan', 'Konfirmasi password tidak sesuai!');
         return;
       }
       Alert.alert(
-        'Registrasi Berhasil',
-        `Akun untuk ${fullName} berhasil dibuat! Silakan masuk.`,
-        [{ text: 'OK', onPress: () => onLoginSuccess(username) }]
+        'Pendaftaran Sukses',
+        `Selamat datang ${fullName}, silakan masuk.`,
+        [{ text: 'Lanjut', onPress: () => onLoginSuccess(username) }]
       );
       return;
     }
@@ -60,53 +60,56 @@ export default function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       className="flex-1 bg-slate-50"
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-        className="px-6 py-8"
+        className="px-6 py-10"
+        showsVerticalScrollIndicator={false}
       >
         <View className="items-center mb-8">
-          <View className="w-16 h-16 rounded-2xl bg-blue-600 justify-center items-center mb-3">
+          <View className="w-16 h-16 rounded-3xl bg-indigo-600 justify-center items-center mb-3 shadow-md">
             <Text className="text-3xl">👛</Text>
           </View>
-          <Text className="text-2xl font-bold text-slate-800">HematYuk</Text>
-          <Text className="text-sm text-slate-500 mt-1 text-center">
-            Asisten pencatat keuangan & anggaran harian mahasiswa
+          <Text className="text-2xl font-black text-slate-800 tracking-tight">
+            HematYuk
+          </Text>
+          <Text className="text-xs text-slate-400 mt-1 font-medium text-center">
+            Solusi Pengelolaan Keuangan & Budgeting Mahasiswa
           </Text>
         </View>
 
-        <View className="bg-white p-6 rounded-2xl border border-slate-200">
-          {/* Tab Switcher Login / Register */}
-          <View className="flex-row bg-slate-100 p-1 rounded-xl mb-6">
+        <View className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+          {/* Segmented Switcher */}
+          <View className="flex-row bg-slate-100 p-1 rounded-2xl mb-6">
             <TouchableOpacity
               onPress={() => setIsLoginMode(true)}
-              className={`flex-1 py-2.5 rounded-lg items-center ${
-                isLoginMode ? 'bg-white' : 'bg-transparent'
+              className={`flex-1 py-2.5 rounded-xl items-center ${
+                isLoginMode ? 'bg-white shadow-xs' : 'bg-transparent'
               }`}
             >
               <Text
-                className={`font-bold text-sm ${
-                  isLoginMode ? 'text-blue-600' : 'text-slate-500'
+                className={`font-bold text-xs ${
+                  isLoginMode ? 'text-indigo-600' : 'text-slate-500'
                 }`}
               >
-                Masuk (Login)
+                Masuk
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setIsLoginMode(false)}
-              className={`flex-1 py-2.5 rounded-lg items-center ${
-                !isLoginMode ? 'bg-white' : 'bg-transparent'
+              className={`flex-1 py-2.5 rounded-xl items-center ${
+                !isLoginMode ? 'bg-white shadow-xs' : 'bg-transparent'
               }`}
             >
               <Text
-                className={`font-bold text-sm ${
-                  !isLoginMode ? 'text-blue-600' : 'text-slate-500'
+                className={`font-bold text-xs ${
+                  !isLoginMode ? 'text-indigo-600' : 'text-slate-500'
                 }`}
               >
-                Daftar (Register)
+                Daftar Akun
               </Text>
             </TouchableOpacity>
           </View>
@@ -148,17 +151,17 @@ export default function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
 
           <View className="mt-2">
             <CustomButton
-              title={isLoginMode ? 'Masuk ke HematYuk' : 'Buat Akun Sekarang'}
+              title={isLoginMode ? 'Masuk ke Aplikasi' : 'Daftar Sekarang'}
               onPress={handleSubmit}
               variant="primary"
             />
           </View>
 
           <TouchableOpacity onPress={toggleMode} className="mt-4 items-center">
-            <Text className="text-xs text-slate-500">
+            <Text className="text-xs font-semibold text-slate-500">
               {isLoginMode
-                ? 'Belum punya akun? Ketuk untuk Daftar'
-                : 'Sudah punya akun? Ketuk untuk Masuk'}
+                ? 'Belum punya akun? Ketuk untuk Mendaftar'
+                : 'Sudah punya akun? Masuk di sini'}
             </Text>
           </TouchableOpacity>
         </View>
