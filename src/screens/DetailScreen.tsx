@@ -14,9 +14,7 @@ export default function DetailScreen({
   onBack,
   onDelete,
 }: DetailScreenProps) {
-  // State untuk mengontrol kemunculan Modal Konfirmasi (Materi Session 6)
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const isIncome = transaction.type === 'income';
 
   const handleConfirmDelete = () => {
@@ -26,49 +24,51 @@ export default function DetailScreen({
 
   return (
     <View className="flex-1 bg-slate-50">
-      {/* Top Bar / Header Navigasi */}
-      <View className="bg-white border-b border-slate-200 px-6 pt-4 pb-4 flex-row items-center justify-between">
+      {/* Top Header Bar */}
+      <View className="bg-white border-b border-slate-100 px-6 pt-4 pb-3 flex-row items-center justify-between">
         <TouchableOpacity
           onPress={onBack}
           activeOpacity={0.7}
-          className="bg-slate-100 px-3.5 py-2 rounded-xl"
+          className="bg-slate-100 px-3.5 py-1.5 rounded-full"
         >
           <Text className="text-slate-700 text-xs font-bold">← Kembali</Text>
         </TouchableOpacity>
-        <Text className="text-base font-bold text-slate-800">
+        <Text className="text-base font-black text-slate-800">
           Rincian Transaksi
         </Text>
         <View className="w-16" />
       </View>
 
-      <ScrollView className="flex-1 px-6 pt-6" showsVerticalScrollIndicator={false}>
-        {/* Kartu Header Nominal & Ikon */}
-        <View className="bg-white p-6 rounded-2xl border border-slate-200 items-center mb-6">
-          <View className="w-20 h-20 rounded-full bg-slate-100 justify-center items-center mb-4">
-            <Text className="text-4xl">{transaction.icon}</Text>
+      <ScrollView className="flex-1 px-5 pt-5" showsVerticalScrollIndicator={false}>
+        {/* Kartu Header Nominal & Kategori */}
+        <View className="bg-white p-6 rounded-3xl border border-slate-100 items-center mb-4 shadow-xs">
+          <View className="w-16 h-16 rounded-3xl bg-slate-50 border border-slate-100 justify-center items-center mb-3">
+            <Text className="text-3xl">{transaction.icon}</Text>
           </View>
-          <Text className="text-sm font-semibold text-slate-400">
+
+          <Text className="text-xs font-bold uppercase tracking-wider text-slate-400">
             {transaction.category}
           </Text>
-          <Text className="text-xl font-bold text-slate-800 mt-1 text-center">
+          <Text className="text-lg font-black text-slate-800 mt-1 text-center">
             {transaction.title}
           </Text>
+
           <Text
-            className={`text-2xl font-extrabold mt-2 ${
-              isIncome ? 'text-emerald-600' : 'text-rose-600'
+            className={`text-2xl font-black mt-2 tracking-tight ${
+              isIncome ? 'text-emerald-600' : 'text-slate-900'
             }`}
           >
             {isIncome ? '+' : '-'} Rp {transaction.amount.toLocaleString('id-ID')}
           </Text>
 
           <View
-            className={`mt-4 px-3 py-1 rounded-full ${
-              isIncome ? 'bg-emerald-50' : 'bg-rose-50'
+            className={`mt-3 px-3 py-1 rounded-full ${
+              isIncome ? 'bg-emerald-50' : 'bg-slate-100'
             }`}
           >
             <Text
-              className={`text-xs font-bold uppercase ${
-                isIncome ? 'text-emerald-700' : 'text-rose-700'
+              className={`text-[11px] font-bold ${
+                isIncome ? 'text-emerald-700' : 'text-slate-600'
               }`}
             >
               {isIncome ? 'Pemasukan Terverifikasi' : 'Pengeluaran Pribadi'}
@@ -76,38 +76,42 @@ export default function DetailScreen({
           </View>
         </View>
 
-        {/* Informasi Detail Lengkap */}
-        <View className="bg-white p-5 rounded-2xl border border-slate-200 mb-6 space-y-4">
-          <View className="flex-row justify-between pb-3 border-b border-slate-100">
+        {/* Informasi Meta Transaksi */}
+        <View className="bg-white p-5 rounded-3xl border border-slate-100 mb-5">
+          <Text className="text-xs font-black uppercase tracking-wider text-slate-400 mb-4">
+            Informasi Detail
+          </Text>
+
+          <View className="flex-row justify-between items-center py-2.5 border-b border-slate-50">
             <Text className="text-xs text-slate-400">ID Referensi</Text>
-            <Text className="text-xs font-bold text-slate-700">
+            <Text className="text-xs font-bold text-slate-700 font-mono">
               {transaction.id}
             </Text>
           </View>
 
-          <View className="flex-row justify-between pb-3 border-b border-slate-100">
+          <View className="flex-row justify-between items-center py-2.5 border-b border-slate-50">
             <Text className="text-xs text-slate-400">Tanggal Transaksi</Text>
             <Text className="text-xs font-bold text-slate-700">
               {transaction.date}
             </Text>
           </View>
 
-          <View className="flex-row justify-between pb-3 border-b border-slate-100">
+          <View className="flex-row justify-between items-center py-2.5 border-b border-slate-50">
             <Text className="text-xs text-slate-400">Metode Pembayaran</Text>
             <Text className="text-xs font-bold text-slate-700">
               {transaction.paymentMethod}
             </Text>
           </View>
 
-          <View className="pt-1">
+          <View className="pt-3">
             <Text className="text-xs text-slate-400 mb-1">Catatan Tambahan</Text>
-            <Text className="text-sm text-slate-700 leading-relaxed">
+            <Text className="text-xs font-medium text-slate-600 leading-relaxed">
               {transaction.notes || 'Tidak ada catatan khusus.'}
             </Text>
           </View>
         </View>
 
-        {/* Tombol Aksi Hapus */}
+        {/* Tombol Hapus */}
         <CustomButton
           title="Hapus Transaksi Ini"
           onPress={() => setIsModalVisible(true)}
@@ -117,20 +121,24 @@ export default function DetailScreen({
         <View className="h-10" />
       </ScrollView>
 
-      {/* Komponen Modal Konfirmasi Sesuai Materi Session 6 */}
+      {/* Modal Dialog Konfirmasi (Materi Session 6) */}
       <Modal
         visible={isModalVisible}
         transparent
         animationType="fade"
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <View className="flex-1 bg-black/50 justify-center items-center px-6">
-          <View className="bg-white w-full max-w-sm p-6 rounded-2xl border border-slate-200">
-            <Text className="text-lg font-bold text-slate-800 text-center mb-2">
+        <View className="flex-1 bg-black/60 justify-center items-center px-6">
+          <View className="bg-white w-full max-w-sm p-6 rounded-3xl border border-slate-100 shadow-xl">
+            <View className="w-12 h-12 rounded-2xl bg-rose-50 justify-center items-center mb-3 self-center">
+              <Text className="text-xl">🗑️</Text>
+            </View>
+
+            <Text className="text-base font-black text-slate-800 text-center mb-1">
               Hapus Transaksi?
             </Text>
-            <Text className="text-sm text-slate-500 text-center mb-6 leading-relaxed">
-              Tindakan ini akan menghapus riwayat transaksi "{transaction.title}" secara permanen dari daftar pengeluaranmu.
+            <Text className="text-xs font-medium text-slate-500 text-center mb-6 leading-relaxed">
+              Data transaksi "{transaction.title}" akan dihapus permanen dari daftar pengeluaranmu.
             </Text>
 
             <View className="flex-row space-x-3">
