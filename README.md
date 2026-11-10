@@ -4,7 +4,7 @@ HematYuk - Manajemen Finansial Mahasiswa
 > Nama Pengembang: Daffa Naufal Arjuna  
 > Tema Aplikasi: Finance 
 
-🚀 Panduan Menjalankan Proyek
+Panduan Menjalankan Proyek
 
 Pastikan Node.js dan npm telah terpasang di perangkat laptop Anda.
 
